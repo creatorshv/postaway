@@ -3,11 +3,13 @@ import express from "express";
 import connectDB from "./src/lib/dbConfig.js";
 import authRouter from "./src/route/auth.routes.js";
 import { applicationErrorHandler } from "./src/lib/error-handler.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 
