@@ -7,6 +7,10 @@ export default class ProfileRepository {
       const user = await UserModel.findById(userID).select(
         "-password -friendRequests -loginTokens"
       );
+      if (!user) {
+        throw new ApplicationError("User not found", 404);
+      }
+
       return user;
     } catch (error) {
       throw error;
@@ -28,6 +32,7 @@ export default class ProfileRepository {
     try {
       const user = await UserModel.findByIdAndUpdate(userID, updates, {
         new: true,
+        runValidators: true,
       }).select("-password -loginTokens -friendRequests");
 
       if (!user) {

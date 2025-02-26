@@ -26,8 +26,12 @@ export default class ProfileController {
   }
 
   async updateDetails(req, res, next) {
-    const userID = req.params.userID;
+    const { userID } = req.params;
     const updates = req.body;
+
+    if (userID !== req.userID) {
+      return res.status(403).json({ status: false, message: "Unauthorized" });
+    }
 
     const allowedFields = ["name", "email", "password", "gender", "avatar"];
     const filteredUpdates = {};
@@ -41,7 +45,7 @@ export default class ProfileController {
     if (Object.keys(filteredUpdates).length === 0) {
       return res
         .status(400)
-        .json({ status: false, message: "No valid fields to update" });
+        .json({ status: false, message: "No valid fields to update." });
     }
 
     if (filteredUpdates.password) {
