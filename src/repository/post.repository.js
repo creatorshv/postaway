@@ -1,5 +1,6 @@
 import ApplicationError from "../lib/error-handler.js";
 import PostModel from "../model/post.model.js";
+import UserModel from "../model/user.model.js";
 
 export default class PostRepository {
   async getAllPosts() {
@@ -33,13 +34,19 @@ export default class PostRepository {
     try {
       const newPost = new PostModel(post);
       await newPost.save();
+
+      await UserModel.findByIdAndUpdate(
+        { _id: newPost.author },
+        { $push: { posts: newPost._id } }
+      );
+
       return newPost;
     } catch (error) {
       throw error;
     }
   }
 
-  async deletePost(postID) {
+  async deletePost(postID, userID) {
     try {
       const deletedPost = await PostModel.findOneAndDelete({
         _id: postID,
@@ -49,6 +56,10 @@ export default class PostRepository {
       if (!deletedPost) {
         throw new ApplicationError("Post not found.", 404);
       }
+
+      await UserModel.findByIdAndUpdate(deletedPost.author, {
+        $pull: { posts: deletedPost._id },
+      });
     } catch (error) {
       throw error;
     }
