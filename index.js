@@ -6,6 +6,7 @@ import authRouter from "./src/route/auth.routes.js";
 import profileRouter from "./src/route/profile.routes.js";
 import postRouter from "./src/route/post.routes.js";
 import commentRouter from "./src/route/comment.route.js";
+import likeRouter from "./src/route/like.routes.js";
 import { applicationErrorHandler } from "./src/lib/error-handler.js";
 
 const app = express();
@@ -18,6 +19,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", profileRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/comments", commentRouter);
+app.use("/api/likes", likeRouter);
 
 app.use(applicationErrorHandler);
 
