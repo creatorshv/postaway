@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./src/lib/dbConfig.js";
 import authRouter from "./src/route/auth.routes.js";
 import profileRouter from "./src/route/profile.routes.js";
+import postRouter from "./src/route/post.routes.js";
 import { applicationErrorHandler } from "./src/lib/error-handler.js";
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", profileRouter);
+app.use("/api/posts", postRouter);
 
 app.use(applicationErrorHandler);
 
