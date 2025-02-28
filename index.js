@@ -5,9 +5,10 @@ import connectDB from "./src/lib/dbConfig.js";
 import authRouter from "./src/route/auth.routes.js";
 import profileRouter from "./src/route/profile.routes.js";
 import postRouter from "./src/route/post.routes.js";
-import commentRouter from "./src/route/comment.route.js";
+import commentRouter from "./src/route/comment.routes.js";
 import likeRouter from "./src/route/like.routes.js";
 import friendRouter from "./src/route/friend.routes.js";
+import otpRouter from "./src/route/otp.routes.js";
 import { applicationErrorHandler } from "./src/lib/error-handler.js";
 
 const app = express();
@@ -22,6 +23,7 @@ app.use("/api/posts", postRouter);
 app.use("/api/comments", commentRouter);
 app.use("/api/likes", likeRouter);
 app.use("/api/friends", friendRouter);
+app.use("/api/otp", otpRouter);
 
 app.use(applicationErrorHandler);
 
