@@ -33,7 +33,7 @@ export default class ProfileController {
       return res.status(403).json({ status: false, message: "Unauthorized" });
     }
 
-    const allowedFields = ["name", "email", "password", "gender", "avatar"];
+    const allowedFields = ["name", "email", "gender", "avatar"];
     const filteredUpdates = {};
 
     for (let key in updates) {
@@ -46,13 +46,6 @@ export default class ProfileController {
       return res
         .status(400)
         .json({ status: false, message: "No valid fields to update." });
-    }
-
-    if (filteredUpdates.password) {
-      filteredUpdates.password = await bcrypt.hash(
-        filteredUpdates.password,
-        12
-      );
     }
 
     try {
