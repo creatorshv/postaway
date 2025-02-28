@@ -77,8 +77,6 @@ export default class FriendRepository {
         "friendRequests friends"
       );
       const friend = await UserModel.findById(friendID).select("friends");
-      console.log(user);
-      console.log(friend);
 
       if (!user || !friend) {
         throw new ApplicationError("User not found.", 404);

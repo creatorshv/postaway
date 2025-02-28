@@ -34,8 +34,6 @@ export default class PostRepository {
   async addPost(files, post) {
     try {
       if (files?.image) {
-        // console.log("Temp file path:", files.image.tempFilePath);
-
         const uploadResponse = await cloudinary.uploader.upload(
           files.image.tempFilePath
         );
