@@ -2,13 +2,29 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import UserModel from "../model/user.model.js";
 import ApplicationError from "../lib/error-handler.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export default class AuthRepository {
-  async signup(user) {
+  async signup(files, user) {
+    if (!user) {
+      throw new ApplicationError("Invalid details.", 400);
+    }
+
+    if (!files || !files.avatar) {
+      throw new Error("Avatar is required.");
+    }
+
     const { password } = user;
     try {
+      const file = files.avatar;
+      const uploadResponse = await cloudinary.uploader.upload(
+        file.tempFilePath
+      );
+
       const hashedPassword = await bcrypt.hash(password, 12);
       user.password = hashedPassword;
+
+      user.avatar = uploadResponse.secure_url;
 
       const newUser = new UserModel(user);
       await newUser.save();

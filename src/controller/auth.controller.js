@@ -7,7 +7,7 @@ export default class AuthController {
 
   async signup(req, res, next) {
     try {
-      const result = await this.authRepository.signup(req.body);
+      const result = await this.authRepository.signup(req.files, req.body);
       res.status(201).json({ status: true, message: result });
     } catch (error) {
       next(error);

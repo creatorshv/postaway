@@ -1,5 +1,6 @@
 import ApplicationError from "../lib/error-handler.js";
 import UserModel from "../model/user.model.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export default class ProfileRepository {
   async getUserDetails(userID) {
@@ -28,8 +29,17 @@ export default class ProfileRepository {
     }
   }
 
-  async updateUserDetails(userID, updates) {
+  async updateUserDetails(files, userID, updates) {
     try {
+      if (files?.avatar) {
+        console.log("Temp file path:", files.avatar.tempFilePath);
+
+        const uploadResponse = await cloudinary.uploader.upload(
+          files.avatar.tempFilePath
+        );
+        updates.avatar = uploadResponse.secure_url;
+      }
+
       const user = await UserModel.findByIdAndUpdate(userID, updates, {
         new: true,
         runValidators: true,

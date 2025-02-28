@@ -1,6 +1,7 @@
 import ApplicationError from "../lib/error-handler.js";
 import PostModel from "../model/post.model.js";
 import UserModel from "../model/user.model.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export default class PostRepository {
   async getAllPosts() {
@@ -30,8 +31,17 @@ export default class PostRepository {
     }
   }
 
-  async addPost(post) {
+  async addPost(files, post) {
     try {
+      if (files?.image) {
+        // console.log("Temp file path:", files.image.tempFilePath);
+
+        const uploadResponse = await cloudinary.uploader.upload(
+          files.image.tempFilePath
+        );
+        post.image = uploadResponse.secure_url;
+      }
+
       const newPost = new PostModel(post);
       await newPost.save();
 

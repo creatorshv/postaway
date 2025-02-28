@@ -1,6 +1,7 @@
 import "./src/lib/env.js";
 import express from "express";
 import cookieParser from "cookie-parser";
+import fileUploadMiddleware from "./src/middleware/fileUpload.js";
 import connectDB from "./src/lib/dbConfig.js";
 import authRouter from "./src/route/auth.routes.js";
 import profileRouter from "./src/route/profile.routes.js";
@@ -17,6 +18,7 @@ const PORT = process.env.PORT;
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(fileUploadMiddleware);
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", profileRouter);

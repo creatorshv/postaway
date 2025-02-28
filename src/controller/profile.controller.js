@@ -28,6 +28,7 @@ export default class ProfileController {
   async updateDetails(req, res, next) {
     const { userID } = req.params;
     const updates = req.body;
+    const files = req.files;
 
     if (userID !== req.userID) {
       return res.status(403).json({ status: false, message: "Unauthorized" });
@@ -42,14 +43,9 @@ export default class ProfileController {
       }
     }
 
-    if (Object.keys(filteredUpdates).length === 0) {
-      return res
-        .status(400)
-        .json({ status: false, message: "No valid fields to update." });
-    }
-
     try {
       const result = await this.profileRepository.updateUserDetails(
+        files,
         userID,
         filteredUpdates
       );

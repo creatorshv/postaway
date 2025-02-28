@@ -42,17 +42,19 @@ export default class PostController {
 
   async createPost(req, res, next) {
     const post = req.body;
+    const files = req.files;
 
-    if (!post.content && !post.image) {
-      res.status(400).json({
+    if (!post.content && !files?.image) {
+      return res.status(400).json({
         status: false,
         message: "Post must contain either content or an image.",
       });
     }
+
     post.author = req.userID;
 
     try {
-      const result = await this.postRepository.addPost(post);
+      const result = await this.postRepository.addPost(files, post);
       res.status(200).json({ status: true, message: result });
     } catch (error) {
       next(error);
