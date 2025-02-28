@@ -10,6 +10,7 @@ import likeRouter from "./src/route/like.routes.js";
 import friendRouter from "./src/route/friend.routes.js";
 import otpRouter from "./src/route/otp.routes.js";
 import { applicationErrorHandler } from "./src/lib/error-handler.js";
+import swaggerDocs from "./src/lib/swagger.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -26,6 +27,8 @@ app.use("/api/friends", friendRouter);
 app.use("/api/otp", otpRouter);
 
 app.use(applicationErrorHandler);
+
+swaggerDocs(app, PORT);
 
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to Postaway.");
