@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import logger from "./logger.js";
 
 export default class ApplicationError extends Error {
   constructor(
@@ -23,5 +24,6 @@ export default class ApplicationError extends Error {
 
 export function applicationErrorHandler(err, req, res, next) {
   const error = new ApplicationError(err);
+  logger.error(`Error: ${error.message} | Code: ${error.status || 500}`);
   res.status(error.statusCode).json({ status: false, message: error.message });
 }
